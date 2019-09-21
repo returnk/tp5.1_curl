@@ -1,0 +1,79 @@
+{extend name="layout" /}
+
+{block name="right" /}
+<article class="cl pd-20">
+    <form action="{:url('article/save')}" method="post" class="form form-horizontal">
+        <div class="row cl">
+            <label class="form-label col-xs-2 col-sm-3"><span class="c-red">*</span>栏目：</label>
+            <div class="formControls col-xs-4 col-sm-4"> <span class="select-box">
+				<select class="select" size="1" name="cates_id" id="cates_id">
+                    {foreach $data as $val}
+					<option value="{$val.id}">{$val.cate_name}</option>
+                    {/foreach}
+				</select>
+				</span></div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-2 col-sm-3">标题：</label>
+            <div class="formControls col-xs-4 col-sm-4">
+                <input type="text" class="input-text" value="" placeholder="" id="title" name="title">
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-2 col-sm-3">描述：</label>
+            <div class="formControls col-xs-4 col-sm-4">
+                <textarea name="desn" cols="" rows="" class="textarea" placeholder="说点什么...最少输入10个字符"
+                          onKeyUp="textarealength(this,100)"></textarea>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-2 col-sm-3">内容：</label>
+            <div class="formControls col-xs-4 col-sm-6">
+                <script name="body" id="editor" type="text/plain" style="width:100%;height:100px;"></script>
+            </div>
+        </div>
+        <div class="row cl">
+            <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+            </div>
+        </div>
+    </form>
+</article>
+<script>
+    $(function () {
+        $('.skin-minimal input').iCheck({
+            checkboxClass: 'icheckbox-blue',
+            radioClass: 'iradio-blue',
+            increaseArea: '20%'
+        });
+
+        $("#form-member-add").validate({
+            rules: {
+                cates_id: {
+                    required: true,
+                },
+                title: {
+                    required: true,
+                },
+
+            },
+            messages: {
+                'title': '必须要选择',
+            },
+            onkeyup: false,
+            focusCleanup: true,
+            success: "valid",
+            submitHandler: function (form) {
+                $(form).ajaxSubmit();
+                var index = parent.layer.getFrameIndex(window.name);
+                parent.$('.btn-refresh').click();
+                parent.layer.close(index);
+            }
+        });
+        var ue = UE.getEditor('editor');
+    });
+</script>
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>
+{/block}
